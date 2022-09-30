@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace TwitchChatBot
 {
@@ -33,26 +34,16 @@ namespace TwitchChatBot
             reader = new StreamReader(client.GetStream());
             writer = new StreamWriter(client.GetStream());
             writer.AutoFlush = true;
-            String line = "Кароч ты заебал пиздеть глохни рыба";
-            StreamReader sr = new StreamReader("C:\\paste.txt");
-
+            Random rnd = new Random();
+            var ans = "";
 
             try
             {
-                //Pass the file path and file name to the StreamReader constructor
-                //StreamReader sr = new StreamReader("C:\\Sample.txt");
-                //Read the first line of text
-                line = sr.ReadLine();
-                //Continue to read until you reach end of file
-                //while (line != null)
-                //{
-                    //write the line to console window
-                    //Console.WriteLine(line);
-                    //Read the next line
-                    //line = sr.ReadLine();
-                //}
-                //close the file
-                //Console.ReadLine();
+                var Lines = File.ReadLines(@"C:\\paste.txt");
+                var LineCount = Lines.Count();
+
+                ans = Lines.ElementAt(rnd.Next(0, Lines.Count()));
+
             }
             catch (Exception e)
             {
@@ -64,7 +55,7 @@ namespace TwitchChatBot
                 //sr.Close();
             //}
 
-            answers.Add(victimName, delegate (string msg, TwitchIRCClient client){client.SendMessage("@" + victimName + " " + line);});
+            answers.Add(victimName, delegate (string msg, TwitchIRCClient client){client.SendMessage("@" + victimName + " " + ans);});
 
             this.channelName = channelName;
             this.botNick = botNick;
